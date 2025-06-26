@@ -23,7 +23,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 // ✅ Guru: Buat/Edit/Hapus Materi
 Route::middleware(['auth', 'role:Guru'])->group(function () {
     Route::resource('materi', MateriController::class)->except(['index', 'show']);
+    Route::resource('tugas', TugasController::class)->except(['show', 'edit', 'update']);
 });
+
 
 // ✅ Semua user login bisa melihat materi
 Route::middleware(['auth'])->group(function () {
