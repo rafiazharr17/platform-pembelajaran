@@ -54,4 +54,5 @@ class Kernel extends HttpKernel
         // ⬇️ Daftarkan RoleMiddleware milikmu di sini
         'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
+    
 }
