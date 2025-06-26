@@ -17,10 +17,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
                         {{ __('Forum') }}
                     </x-nav-link>
-                    
+
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
                         <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
                             {{ __('Materi') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->role->name_role === 'Guru')
+                        <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
+                            {{ __('Tugas') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -61,7 +67,13 @@
 
         @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
             <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
-                {{ __('Materi') }}
+                📚 {{ __('Materi') }}
+            </x-responsive-nav-link>
+        @endif
+
+        @if (Auth::user()->role->name_role === 'Guru')
+            <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
+                📘 {{ __('Tugas') }}
             </x-responsive-nav-link>
         @endif
 
