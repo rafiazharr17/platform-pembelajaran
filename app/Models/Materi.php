@@ -11,7 +11,10 @@ class Materi extends Model
     protected $fillable = [
         'user_id',
         'judul',
-        'konten',
+        'deskripsi', // Tambahkan ini
+        'file_path',  // Tambahkan ini
+        'file_type',  // Tambahkan ini
+        'thumbnail_path', // Tambahkan ini
     ];
 
     public function user()

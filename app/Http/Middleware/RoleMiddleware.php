@@ -5,16 +5,22 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;  // Pastikan ini di-import
 
 class RoleMiddleware
 {
-    // App\Http\Middleware\RoleMiddleware.php
-    public function handle(Request $request, Closure $next, $role): Response
-    {
-        if (!$request->user() || $request->user()->role->name_role !== $role) {
-            abort(403, 'Unauthorized');
-        }
-
-        return $next($request);
+    public function handle($request, Closure $next, $role)
+{
+    if (!Auth::check()) {
+        abort(403, 'Not logged in');
     }
+
+    $userRole = Auth::user()->role->name_role ?? 'undefined';
+
+    if ($userRole !== $role) {
+        abort(403, "ACCESS DENIED: YOU ARE NOT $role (You are $userRole)");
+    }
+
+    return $next($request);
+}
 }

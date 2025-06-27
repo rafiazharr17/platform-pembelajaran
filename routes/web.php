@@ -4,37 +4,51 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\TugasController;
+use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// ✅ Dashboard (semua role login)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// ✅ Admin: Kelola user & role
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+// ✅ Admin: Kelola user (gunakan middleware langsung tanpa Kernel)
+Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
 });
 
-// ✅ Guru: Buat/Edit/Hapus Materi
-Route::middleware(['auth', 'role:Guru'])->group(function () {
-    Route::resource('materi', MateriController::class)->except(['index', 'show']);
-    Route::resource('tugas', TugasController::class)->except(['show', 'edit', 'update']);
+// ✅ Guru: Kelola materi (tanpa resource agar granular dan mudah dikontrol)
+Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
+    Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+    Route::get('/materi/{materi}/edit', [MateriController::class, 'edit'])->name('materi.edit');
+    Route::put('/materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
 });
 
+// ✅ Untuk Guru saja: CRUD tugas
+Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
+    Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
+    Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+});
 
-// ✅ Semua user login bisa melihat materi
+// ✅ Semua user login bisa melihat materi dan kelola profil
 Route::middleware(['auth'])->group(function () {
-    Route::resource('materi', MateriController::class)->only(['index', 'show']);
+    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+    Route::get('/materi/{materi}', [MateriController::class, 'show'])->name('materi.show');
 
-    // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// ✅ Auth routes
 require __DIR__.'/auth.php';
