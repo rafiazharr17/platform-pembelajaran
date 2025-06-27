@@ -73,7 +73,10 @@ class KomentarController extends Controller
 
         // Guru bisa hapus semua komentar
         // Murid hanya bisa hapus komentar miliknya sendiri
-        if (strtolower($user->role) !== 'guru' && $user->id !== $komentar->user_id) {
+        // Pastikan akses ke atribut string, bukan relasi
+        $roleName = is_string($user->role) ? $user->role : (is_object($user->role) && property_exists($user->role, 'name') ? $user->role->name : null);
+
+        if (strtolower($roleName) !== 'guru' && $user->id !== $komentar->user_id) {
             abort(403, 'Anda tidak memiliki izin untuk menghapus komentar ini.');
         }
 
