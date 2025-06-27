@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-4xl font-extrabold text-blue-800 flex items-center gap-2">
+        <h2 class="text-4xl font-bold text-blue-800 flex items-center gap-2">
             <span class="material-icons text-4xl">dashboard</span>
             Dashboard
         </h2>

@@ -13,26 +13,30 @@
 
                 <!-- Menu utama (Desktop) -->
                 <div class="hidden sm:flex space-x-6 ml-6">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
+                        class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-                    <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
-                        {{ __('Materi') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" 
+                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                            {{ __('Materi') }}
+                        </x-nav-link>
                     @endif
 
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-                    <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
-                        {{ __('Tugas') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" 
+                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                            {{ __('Tugas') }}
+                        </x-nav-link>
                     @endif
 
                     @if (Auth::user()->role->name_role === 'Admin')
-                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
-                        {{ __('Kelola User') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" 
+                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                            {{ __('Kelola User') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -48,13 +52,16 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('profile.edit')" 
+                            class="text-white hover:text-white hover:bg-blue-600/80 px-4 py-2 block transition-colors duration-150">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            <x-dropdown-link :href="route('logout')" 
+                                onclick="event.preventDefault(); this.closest('form').submit();" 
+                                class="text-white hover:text-white hover:bg-blue-600/80 px-4 py-2 block transition-colors duration-150">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -66,35 +73,42 @@
 
     <!-- Responsive Mobile Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden bg-blue-800 text-white px-4 pt-2 pb-4 space-y-1">
-        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
-            {{ __('Forum') }}
+        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
+            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+            {{ __('Dashboard') }}
         </x-responsive-nav-link>
 
         @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-        <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
-            📚 {{ __('Materi') }}
-        </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" 
+                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                {{ __('Materi') }}
+            </x-responsive-nav-link>
         @endif
 
         @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-        <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
-            📘 {{ __('Tugas') }}
-        </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" 
+                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                {{ __('Tugas') }}
+            </x-responsive-nav-link>
         @endif
 
         @if (Auth::user()->role->name_role === 'Admin')
-        <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
-            👤 {{ __('Kelola User') }}
-        </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" 
+                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                {{ __('Kelola User') }}
+            </x-responsive-nav-link>
         @endif
 
-        <x-responsive-nav-link :href="route('profile.edit')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
+        <x-responsive-nav-link :href="route('profile.edit')" 
+            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
             {{ __('Profile') }}
         </x-responsive-nav-link>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" class="hover:bg-blue-900 px-3 py-2 rounded-md">
+            <x-responsive-nav-link :href="route('logout')" 
+                onclick="event.preventDefault(); this.closest('form').submit();" 
+                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
                 {{ __('Log Out') }}
             </x-responsive-nav-link>
         </form>
