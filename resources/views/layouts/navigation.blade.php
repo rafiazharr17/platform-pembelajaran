@@ -1,7 +1,6 @@
 <nav x-data="{ open: false }" class="bg-blue-700 border-b border-blue-800 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-
             <!-- KIRI: Sidebar toggle + Judul -->
             <div class="flex items-center space-x-4">
                 <!-- Toggle (Mobile only) -->
@@ -27,6 +26,12 @@
                     @if (Auth::user()->role->name_role === 'Guru')
                         <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
                             {{ __('Tugas') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->role->name_role === 'Admin')
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
+                            {{ __('Kelola User') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -74,6 +79,12 @@
         @if (Auth::user()->role->name_role === 'Guru')
             <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
                 📘 {{ __('Tugas') }}
+            </x-responsive-nav-link>
+        @endif
+
+        @if (Auth::user()->role->name_role === 'Admin')
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" class="hover:bg-blue-900 px-3 py-2 rounded-md">
+                👤 {{ __('Kelola User') }}
             </x-responsive-nav-link>
         @endif
 
