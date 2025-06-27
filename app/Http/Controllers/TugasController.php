@@ -9,7 +9,7 @@ class TugasController extends Controller
 {
     public function index()
     {
-        $tugas = Tugas::latest()->get();
+        $tugas = Tugas::latest()->get(); // return collection of model
         return view('tugas.index', compact('tugas'));
     }
 
@@ -23,20 +23,45 @@ class TugasController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
+            'deadline' => 'nullable|date',
         ]);
 
         Tugas::create([
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
+            'deadline' => $request->deadline,
         ]);
 
         return redirect()->route('tugas.index')->with('success', 'Tugas berhasil ditambahkan.');
     }
 
+    public function show(Tugas $tugas)
+    {
+        return view('tugas.show', compact('tugas'));
+    }
+
+    public function edit(Tugas $tugas)
+    {
+        return view('tugas.edit', compact('tugas'));
+    }
+
+    public function update(Request $request, Tugas $tugas)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'deadline' => 'nullable|date',
+        ]);
+
+        $tugas->update($request->only(['judul', 'deskripsi', 'deadline']));
+
+        return redirect()->route('tugas.index')->with('success', 'Tugas berhasil diperbarui.');
+    }
+
     public function destroy(Tugas $tugas)
     {
         $tugas->delete();
-        return back()->with('success', 'Tugas berhasil dihapus.');
+
+        return redirect()->route('tugas.index')->with('success', 'Tugas berhasil dihapus.');
     }
 }
-

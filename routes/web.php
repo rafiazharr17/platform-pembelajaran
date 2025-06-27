@@ -5,31 +5,28 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\TugasController;
-use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\TugasUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\RoleMiddleware;
 
+Route::get('/', fn () => view('welcome'));
+
+// Dashboard (semua yang login)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth'])
     ->name('dashboard');
 
+// Admin: Kelola user dan role
+Route::middleware(['auth', RoleMiddleware::class . ':Admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
+    });
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// ✅ Dashboard (semua role login)
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
-
-// ✅ Admin: Kelola user (gunakan middleware langsung tanpa Kernel)
-Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
-});
-
-// ✅ Guru: Kelola materi (tanpa resource agar granular dan mudah dikontrol)
+// Guru: CRUD Materi
 Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
     Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
     Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
@@ -38,25 +35,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () 
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
 });
 
-// ✅ Route index tugas → bisa diakses Guru & Murid
-Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
-    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
-});
-
-// ✅ Guru: CRUD tugas penuh
-Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
-    Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
-    Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
-    Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
-});
-
-// ✅ Murid: nanti bisa tambahkan route pengumpulan tugas di sini
-Route::middleware(['auth', RoleMiddleware::class . ':Murid'])->group(function () {
-    // contoh: Route::post('/tugas/{id}/kumpul', ...)
-});
-
-
-// ✅ Semua user login bisa melihat materi dan kelola profil
+// Semua user login: lihat materi & profil
 Route::middleware(['auth'])->group(function () {
     Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
     Route::get('/materi/{materi}', [MateriController::class, 'show'])->name('materi.show');
@@ -66,5 +45,31 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ✅ Auth routes
+// Guru & Murid: lihat daftar tugas & detail tugas
+Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/{tugas}', [TugasController::class, 'show'])->name('tugas.show');
+});
+
+// Guru: buat, edit, hapus tugas
+Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
+    Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
+    Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
+    Route::get('/tugas/{tugas}/edit', [TugasController::class, 'edit'])->name('tugas.edit');
+    Route::put('/tugas/{tugas}', [TugasController::class, 'update'])->name('tugas.update');
+    Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+});
+
+// Murid: kumpulkan & hapus tugas yang dikumpulkan
+Route::middleware(['auth', RoleMiddleware::class . ':Murid'])
+    ->prefix('tugas-user')
+    ->name('tugas-user.')
+    ->group(function () {
+        Route::get('/', [TugasUserController::class, 'index'])->name('index');
+        Route::get('/{tugas}', [TugasUserController::class, 'show'])->name('show');
+        Route::post('/{tugas}', [TugasUserController::class, 'store'])->name('store');
+        Route::delete('/{tugasUser}', [TugasUserController::class, 'destroy'])->name('destroy');
+    });
+
+// Auth bawaan Laravel (register, login, dll)
 require __DIR__ . '/auth.php';

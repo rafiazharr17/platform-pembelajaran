@@ -4,23 +4,24 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;  // Pastikan ini di-import
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
-{
-    if (!Auth::check()) {
-        abort(403, 'Not logged in');
+    public function handle(Request $request, Closure $next, ...$roles)
+    {
+        $user = Auth::user();
+
+        // Jika belum login
+        if (! $user) {
+            abort(403, 'ACCESS DENIED: NOT AUTHENTICATED');
+        }
+
+        // Jika role user tidak cocok
+        if (! in_array($user->role->name_role, $roles)) {
+            abort(403, 'ACCESS DENIED: YOU ARE NOT ' . implode('/', $roles) . ' (You are ' . $user->role->name_role . ')');
+        }
+
+        return $next($request);
     }
-
-    $userRole = Auth::user()->role->name_role ?? 'undefined';
-
-    if ($userRole !== $role) {
-        abort(403, "ACCESS DENIED: YOU ARE NOT $role (You are $userRole)");
-    }
-
-    return $next($request);
-}
 }

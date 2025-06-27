@@ -20,7 +20,6 @@
 
             <form action="{{ route('tugas.store') }}" method="POST">
                 @csrf
-
                 <div class="mb-4">
                     <label for="judul" class="block font-semibold">Judul Tugas</label>
                     <input type="text" name="judul" id="judul" value="{{ old('judul') }}"
@@ -35,14 +34,13 @@
 
                 <div class="mb-4">
                     <label for="deadline" class="block font-semibold">Deadline</label>
-                    <input type="datetime-local" name="deadline" id="deadline"
-                        value="{{ old('deadline') }}"
+                    <input type="datetime-local" name="deadline" id="deadline" value="{{ old('deadline') }}"
                         class="w-full border border-gray-300 rounded px-3 py-2">
                 </div>
 
                 <div class="text-right">
                     <button type="submit"
-                        class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-white hover:text-blue-700 transition-all duration-300">
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
                         Simpan Tugas
                     </button>
                 </div>
