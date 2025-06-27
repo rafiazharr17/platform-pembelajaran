@@ -9,7 +9,7 @@
     <div class="py-10">
         {{-- Selamat Datang --}}
         <div class="max-w-6xl mx-auto mb-10">
-            <div class="bg-blue-100 border border-blue-200 rounded-xl shadow p-8">
+            <div class="bg-white border border-blue-100 rounded-xl shadow p-8">
                 <h1 class="text-3xl font-extrabold text-blue-800 mb-2 flex items-center gap-2">
                     <span class="material-icons text-4xl text-blue-600">school</span>
                     Selamat Datang, {{ Auth::user()->name }}!
@@ -18,6 +18,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Statistik --}}
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
