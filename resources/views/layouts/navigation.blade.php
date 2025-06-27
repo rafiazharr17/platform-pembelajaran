@@ -14,7 +14,7 @@
                 <!-- Menu utama (Desktop) -->
                 <div class="hidden sm:flex space-x-6 ml-6">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:bg-blue-800 px-3 py-2 rounded-md">
-                        {{ __('Forum') }}
+                        {{ __('Dashboard') }}
                     </x-nav-link>
 
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
