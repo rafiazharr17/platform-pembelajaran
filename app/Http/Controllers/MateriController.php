@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MateriController extends Controller
 {
+    // Tampilkan daftar materi (dengan fitur pencarian)
     public function index(Request $request)
     {
         $query = Materi::query();
@@ -19,17 +20,17 @@ class MateriController extends Controller
                 ->orWhere('deskripsi', 'like', "%{$search}%");
         }
 
-        $materi = $query->latest()->get(); // Atau ->paginate(9) jika kamu ingin pagination
-
+        $materi = $query->latest()->get(); // Bisa diganti ->paginate() jika ingin pagination
         return view('materi.index', compact('materi'));
     }
 
-
+    // Tampilkan form tambah materi
     public function create()
     {
         return view('materi.create');
     }
 
+    // Simpan materi baru
     public function store(Request $request)
     {
         $request->validate([
@@ -61,16 +62,21 @@ class MateriController extends Controller
         return redirect()->route('materi.index')->with('success', 'Materi berhasil ditambahkan.');
     }
 
+    // Tampilkan detail materi + komentar
     public function show(Materi $materi)
     {
+        // Ambil komentar yang terkait dengan materi ini beserta user-nya
+        $materi->load(['komentar.user.role']);
         return view('materi.show', compact('materi'));
     }
 
+    // Tampilkan form edit
     public function edit(Materi $materi)
     {
         return view('materi.edit', compact('materi'));
     }
 
+    // Proses update data materi
     public function update(Request $request, Materi $materi)
     {
         $request->validate([
@@ -106,12 +112,17 @@ class MateriController extends Controller
         return redirect()->route('materi.index')->with('success', 'Materi berhasil diperbarui.');
     }
 
+    // Hapus materi
     public function destroy(Materi $materi)
     {
         if ($materi->file_path) {
             Storage::disk('public')->delete($materi->file_path);
         }
+        if ($materi->thumbnail_path) {
+            Storage::disk('public')->delete($materi->thumbnail_path);
+        }
         $materi->delete();
+
         return redirect()->route('materi.index')->with('success', 'Materi berhasil dihapus.');
     }
 }

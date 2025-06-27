@@ -21,4 +21,10 @@ class Materi extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Dalam App\Models\Materi.php
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class, 'materi_id', 'id');
+    }
 }

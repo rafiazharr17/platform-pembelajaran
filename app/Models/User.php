@@ -85,4 +85,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Tugas::class, 'tugas_users')
             ->withPivot('jawaban', 'waktu_pengumpulan');
     }
+    public function getRoleNameAttribute()
+    {
+        return $this->role ? $this->role->nama_role : null;
+    }
 }

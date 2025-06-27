@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Komentar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KomentarController extends Controller
 {
@@ -25,11 +26,18 @@ class KomentarController extends Controller
 
         $komentar = Komentar::create($request->only(['isi_komentar', 'materi_id', 'user_id']));
 
+        // 🔁 Tambahkan redirect kalau request bukan dari AJAX
+        if (! $request->expectsJson()) {
+            return redirect()->route('materi.show', $request->materi_id)->with('success', 'Komentar berhasil ditambahkan.');
+        }
+
+        // Kalau memang request dari API / AJAX
         return response()->json([
             'message' => 'Komentar berhasil ditambahkan',
             'data' => $komentar
         ], 201);
     }
+
 
     // Tampilkan komentar berdasarkan ID
     public function show($id)
@@ -61,10 +69,16 @@ class KomentarController extends Controller
     public function destroy($id)
     {
         $komentar = Komentar::findOrFail($id);
+        $user = Auth::user();
+
+        // Guru bisa hapus semua komentar
+        // Murid hanya bisa hapus komentar miliknya sendiri
+        if (strtolower($user->role) !== 'guru' && $user->id !== $komentar->user_id) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus komentar ini.');
+        }
+
         $komentar->delete();
 
-        return response()->json([
-            'message' => 'Komentar berhasil dihapus'
-        ]);
+        return back()->with('success', 'Komentar berhasil dihapus.');
     }
 }

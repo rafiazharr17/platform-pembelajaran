@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\TugasUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Middleware\RoleMiddleware;
 
 // Halaman awal
@@ -46,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Guru: buat, edit, hapus tugas (diletakkan sebelum route show)
+// Guru: buat, edit, hapus tugas
 Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
@@ -55,7 +56,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () 
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
 
-// Guru & Murid: lihat daftar tugas & detail
+// Guru & Murid: lihat tugas
 Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
     Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/{tugas}', [TugasController::class, 'show'])->name('tugas.show');
@@ -71,6 +72,12 @@ Route::middleware(['auth', RoleMiddleware::class . ':Murid'])
         Route::post('/{tugas}', [TugasUserController::class, 'store'])->name('store');
         Route::delete('/{tugasUser}', [TugasUserController::class, 'destroy'])->name('destroy');
     });
+
+// Komentar (Guru & Murid): Simpan dan Hapus
+Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
+    Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+    Route::delete('/komentar/{komentar}', [KomentarController::class, 'destroy'])->name('komentar.destroy');
+});
 
 // Auth Laravel
 require __DIR__ . '/auth.php';
