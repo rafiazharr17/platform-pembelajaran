@@ -9,9 +9,10 @@ use App\Http\Controllers\TugasUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\RoleMiddleware;
 
+// Halaman awal
 Route::get('/', fn () => view('welcome'));
 
-// Dashboard (semua yang login)
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth'])
     ->name('dashboard');
@@ -45,13 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Guru & Murid: lihat daftar tugas & detail tugas
-Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
-    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
-    Route::get('/tugas/{tugas}', [TugasController::class, 'show'])->name('tugas.show');
-});
-
-// Guru: buat, edit, hapus tugas
+// Guru: buat, edit, hapus tugas (diletakkan sebelum route show)
 Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
@@ -60,7 +55,13 @@ Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () 
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
 
-// Murid: kumpulkan & hapus tugas yang dikumpulkan
+// Guru & Murid: lihat daftar tugas & detail
+Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/{tugas}', [TugasController::class, 'show'])->name('tugas.show');
+});
+
+// Murid: kumpulkan tugas
 Route::middleware(['auth', RoleMiddleware::class . ':Murid'])
     ->prefix('tugas-user')
     ->name('tugas-user.')
@@ -71,5 +72,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':Murid'])
         Route::delete('/{tugasUser}', [TugasUserController::class, 'destroy'])->name('destroy');
     });
 
-// Auth bawaan Laravel (register, login, dll)
+// Auth Laravel
 require __DIR__ . '/auth.php';
