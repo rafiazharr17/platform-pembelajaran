@@ -30,7 +30,7 @@
                 </form>
             </div>
             @else
-            <form method="POST" action="{{ route('tugas-user.store', $tugas) }}" enctype="multipart/form-data" class="space-y-4">
+            <form method="POST" action="{{ route('tugas-user.store', $tugas->id_tugas) }}" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 <div>
                     <label for="file_jawaban" class="block font-medium text-gray-700">Upload Jawaban</label>
@@ -49,6 +49,12 @@
                 </button>
             </form>
             @endif
+            <div class="mt-6">
+                <a href="{{ route('tugas-user.index') }}"
+                    class="inline-flex items-center px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-white hover:text-blue-700 border border-blue-600 transition">
+                    Kembali ke Daftar
+                </a>
+            </div>
         </div>
     </div>
 </x-app-layout>

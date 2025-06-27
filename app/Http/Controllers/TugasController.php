@@ -37,7 +37,10 @@ class TugasController extends Controller
 
     public function show(Tugas $tugas)
     {
-        return view('tugas.show', compact('tugas'));
+        // Ambil semua file yang dikumpulkan beserta user-nya
+        $pengumpulan = $tugas->pengumpulan()->with('user')->get();
+
+        return view('tugas.show', compact('tugas', 'pengumpulan'));
     }
 
     public function edit(Tugas $tugas)

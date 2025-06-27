@@ -18,8 +18,14 @@ class Tugas extends Model
         'deadline',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'id_tugas';
+    }
+
     public function pengumpulan()
     {
         return $this->hasMany(TugasUser::class, 'id_tugas');
     }
 }
+

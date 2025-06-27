@@ -30,7 +30,7 @@
                 </form>
             </div>
             @else
-            <form method="POST" action="{{ route('tugas-user.store', $tugas->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('tugas-user.store', $tugas->id_tugas) }}" enctype="multipart/form-data">
                 @csrf
                 <label for="file_jawaban" class="block mb-2 font-medium">Upload Jawaban:</label>
                 <input type="file" name="file_jawaban" id="file_jawaban" required class="mb-4">
