@@ -46,6 +46,11 @@ Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () 
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
 
+// ✅ Untuk Murid saja: Tambah dan hapus pengumpulan tugas
+Route::middleware(['auth', RoleMiddleware::class . ':Murid'])->group(function () {
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+});
+
 // ✅ Semua user login bisa melihat materi dan kelola profil
 Route::middleware(['auth'])->group(function () {
     Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
@@ -57,4 +62,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // ✅ Auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
