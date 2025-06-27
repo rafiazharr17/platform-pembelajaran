@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\RoleMiddleware;
 
 // Halaman awal
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn() => view('welcome'));
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Guru: buat, edit, hapus tugas (diletakkan sebelum route show)
+// Guru: buat, edit, hapus tugas
 Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
@@ -67,9 +67,12 @@ Route::middleware(['auth', RoleMiddleware::class . ':Murid'])
     ->name('tugas-user.')
     ->group(function () {
         Route::get('/', [TugasUserController::class, 'index'])->name('index');
-        Route::get('/{tugas}', [TugasUserController::class, 'show'])->name('show');
-        Route::post('/{tugas}', [TugasUserController::class, 'store'])->name('store');
-        Route::delete('/{tugasUser}', [TugasUserController::class, 'destroy'])->name('destroy');
+
+        // ✅ Butuh parameter {tugas}
+        Route::get('/{tugas}/detail', [TugasUserController::class, 'show'])->name('show');
+        Route::get('/{tugas}/kumpul', [TugasUserController::class, 'kumpul'])->name('kumpul');
+        Route::post('/{tugas}/kumpul', [TugasUserController::class, 'store'])->name('store');
+        Route::delete('/hapus/{tugasUser}', [TugasUserController::class, 'destroy'])->name('destroy');
     });
 
 // Auth Laravel
