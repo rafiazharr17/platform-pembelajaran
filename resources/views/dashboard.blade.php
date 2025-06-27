@@ -49,7 +49,10 @@
             <h3 class="text-xl font-bold text-blue-700 mb-4">📚 5 Materi Terbaru</h3>
             @forelse($recentMateri as $materi)
                 <div class="mb-3 border-b pb-2">
-                    <div class="text-lg font-semibold text-gray-800">{{ $materi->judul }}</div>
+                    <a href="{{ route('materi.show', $materi->id) }}"
+                        class="text-lg font-semibold text-blue-800 hover:underline">
+                        {{ $materi->judul }}
+                    </a>
                     <div class="text-sm text-gray-500">{{ $materi->created_at->format('d M Y') }}</div>
                 </div>
             @empty
@@ -61,7 +64,10 @@
             <h3 class="text-xl font-bold text-green-700 mb-4">📝 5 Tugas Terbaru</h3>
             @forelse($recentTugas as $tugas)
                 <div class="mb-3 border-b pb-2">
-                    <div class="text-lg font-semibold text-gray-800">{{ $tugas->judul }}</div>
+                    <a href="{{ route('tugas.index') }}#tugas-{{ $tugas->id }}"
+                        class="text-lg font-semibold text-green-800 hover:underline">
+                        {{ $tugas->judul }}
+                    </a>
                     <div class="text-sm text-gray-500">{{ $tugas->created_at->format('d M Y') }}</div>
                 </div>
             @empty
@@ -69,5 +75,6 @@
             @endforelse
         </div>
     </div>
+
     </div>
 </x-app-layout>
