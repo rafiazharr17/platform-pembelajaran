@@ -38,18 +38,23 @@ Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () 
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
 });
 
-// ✅ Untuk Guru saja: CRUD tugas
-Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
+// ✅ Route index tugas → bisa diakses Guru & Murid
+Route::middleware(['auth', RoleMiddleware::class . ':Guru,Murid'])->group(function () {
     Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+});
+
+// ✅ Guru: CRUD tugas penuh
+Route::middleware(['auth', RoleMiddleware::class . ':Guru'])->group(function () {
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
 
-// ✅ Untuk Murid saja: Tambah dan hapus pengumpulan tugas
+// ✅ Murid: nanti bisa tambahkan route pengumpulan tugas di sini
 Route::middleware(['auth', RoleMiddleware::class . ':Murid'])->group(function () {
-    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    // contoh: Route::post('/tugas/{id}/kumpul', ...)
 });
+
 
 // ✅ Semua user login bisa melihat materi dan kelola profil
 Route::middleware(['auth'])->group(function () {
