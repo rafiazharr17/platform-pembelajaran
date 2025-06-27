@@ -37,12 +37,12 @@
 
                             @if (Auth::user()->role->name_role === 'Guru')
                                 <div class="flex gap-2">
-                                    <a href="{{ route('tugas.edit', $item->id) }}"
+                                    <a href="{{ route('tugas.edit', $item) }}"
                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition">
                                         <span class="material-icons text-base">edit</span>
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('tugas.destroy', $item->id) }}"
+                                    <form method="POST" action="{{ route('tugas.destroy', $item) }}"
                                           onsubmit="return confirm('Yakin ingin menghapus tugas ini?')">
                                         @csrf
                                         @method('DELETE')
