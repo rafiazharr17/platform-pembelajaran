@@ -9,34 +9,37 @@
                 </button>
 
                 <!-- Judul -->
-                <span class="text-lg font-semibold tracking-wide">Materi App</span>
+                <div class="flex items-center space-x-2 text-lg font-semibold tracking-wide">
+                    <img src="{{ asset('images/logo-materi-app.png') }}" alt="Logo Materi App" class="w-12 h-12">
+                    <span>Materi App</span>
+                </div>
 
                 <!-- Menu utama (Desktop) -->
                 <div class="hidden sm:flex space-x-6 ml-6">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
                         class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-                        <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" 
-                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                            {{ __('Materi') }}
-                        </x-nav-link>
+                    <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')"
+                        class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                        {{ __('Materi') }}
+                    </x-nav-link>
                     @endif
 
                     @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-                        <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" 
-                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                            {{ __('Tugas') }}
-                        </x-nav-link>
+                    <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')"
+                        class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                        {{ __('Tugas') }}
+                    </x-nav-link>
                     @endif
 
                     @if (Auth::user()->role->name_role === 'Admin')
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" 
-                            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                            {{ __('Kelola User') }}
-                        </x-nav-link>
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"
+                        class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+                        {{ __('Kelola User') }}
+                    </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -52,15 +55,15 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')" 
+                        <x-dropdown-link :href="route('profile.edit')"
                             class="text-white hover:text-white hover:bg-blue-600/80 px-4 py-2 block transition-colors duration-150">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')" 
-                                onclick="event.preventDefault(); this.closest('form').submit();" 
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();"
                                 class="text-white hover:text-white hover:bg-blue-600/80 px-4 py-2 block transition-colors duration-150">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -73,41 +76,41 @@
 
     <!-- Responsive Mobile Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden bg-blue-800 text-white px-4 pt-2 pb-4 space-y-1">
-        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
+        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
             class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
             {{ __('Dashboard') }}
         </x-responsive-nav-link>
 
         @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-            <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')" 
-                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                {{ __('Materi') }}
-            </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.*')"
+            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+            {{ __('Materi') }}
+        </x-responsive-nav-link>
         @endif
 
         @if (Auth::user()->role->name_role === 'Guru' || Auth::user()->role->name_role === 'Murid')
-            <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')" 
-                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                {{ __('Tugas') }}
-            </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.*')"
+            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+            {{ __('Tugas') }}
+        </x-responsive-nav-link>
         @endif
 
         @if (Auth::user()->role->name_role === 'Admin')
-            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')" 
-                class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
-                {{ __('Kelola User') }}
-            </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"
+            class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
+            {{ __('Kelola User') }}
+        </x-responsive-nav-link>
         @endif
 
-        <x-responsive-nav-link :href="route('profile.edit')" 
+        <x-responsive-nav-link :href="route('profile.edit')"
             class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
             {{ __('Profile') }}
         </x-responsive-nav-link>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <x-responsive-nav-link :href="route('logout')" 
-                onclick="event.preventDefault(); this.closest('form').submit();" 
+            <x-responsive-nav-link :href="route('logout')"
+                onclick="event.preventDefault(); this.closest('form').submit();"
                 class="text-white hover:text-white hover:bg-blue-600/80 px-3 py-2 rounded-md transition-colors duration-150">
                 {{ __('Log Out') }}
             </x-responsive-nav-link>
