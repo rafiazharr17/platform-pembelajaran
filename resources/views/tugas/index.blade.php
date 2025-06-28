@@ -7,18 +7,39 @@
     </x-slot>
 
     <div class="mt-8 px-4 sm:px-6 lg:px-8">
+        {{-- Tombol Tambah Tugas --}}
         @if (Auth::user()->role->name_role === 'Guru')
             <div class="flex justify-end mb-4">
                 <a href="{{ route('tugas.create') }}"
-                   class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
+                   class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-white hover:text-blue-700 transition-all duration-300">
                     <span class="material-icons">add_circle</span>
                     Tambah Tugas
                 </a>
             </div>
         @endif
 
+        {{-- Form Pencarian --}}
+        <div class="mb-6">
+            <form method="GET" action="{{ route('tugas.index') }}" class="flex flex-col sm:flex-row sm:items-center gap-2 max-w-full sm:max-w-xl">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    class="w-full border border-blue-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                    placeholder="Cari tugas berdasarkan judul...">
+                <button type="submit"
+                    class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-white hover:text-blue-700 transition-all duration-300">
+                    Cari
+                </button>
+            </form>
+        </div>
+
+        {{-- Daftar Tugas --}}
         @if ($tugas->isEmpty())
-            <div class="text-center text-gray-500">Belum ada tugas tersedia.</div>
+            <div class="text-center text-gray-500">
+                @if (request('search'))
+                    Tidak ditemukan tugas untuk: <strong>"{{ request('search') }}"</strong>
+                @else
+                    Belum ada tugas tersedia.
+                @endif
+            </div>
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($tugas as $item)

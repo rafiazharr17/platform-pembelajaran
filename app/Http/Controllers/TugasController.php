@@ -7,11 +7,19 @@ use Illuminate\Http\Request;
 
 class TugasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tugas = Tugas::latest()->get(); // return collection of model
+        $query = Tugas::query();
+
+        if ($request->has('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        $tugas = $query->latest()->get(); // atau ->paginate(10) kalau ingin paginasi
+
         return view('tugas.index', compact('tugas'));
     }
+
 
     public function create()
     {
