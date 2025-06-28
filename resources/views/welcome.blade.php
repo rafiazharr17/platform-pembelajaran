@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +10,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans antialiased">
 
     <!-- Navbar -->
@@ -20,7 +22,7 @@
                 <a href="#tentang" class="text-sm text-gray-700 hover:text-blue-600">Tentang</a>
                 <a href="{{ route('login') }}" class="text-sm text-blue-700 font-semibold hover:underline">Masuk</a>
                 <a href="{{ route('register') }}"
-                   class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
                     Daftar Gratis
                 </a>
             </div>
@@ -39,14 +41,14 @@
                 </p>
                 <div class="flex gap-4 mt-6">
                     <a href="{{ route('register') }}"
-                       class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
                         Mulai Sekarang
                     </a>
                     <a href="#fitur" class="text-blue-700 font-semibold hover:underline pt-3">Lihat Fitur</a>
                 </div>
             </div>
             <div class="md:w-1/2">
-                <img src="https://undraw.co/api/illustrations/online_learning" alt="Ilustrasi belajar" class="w-full max-w-md mx-auto drop-shadow-lg">
+                <img src="/images/sekolah.jpeg" alt="Ilustrasi belajar" class="w-full max-w-md mx-auto drop-shadow-lg">
             </div>
         </div>
     </section>
@@ -81,7 +83,7 @@
             <h2 class="text-3xl font-bold text-blue-800 mb-6">Ayo Bergabung dengan Ribuan Pengguna Lainnya!</h2>
             <p class="text-gray-700 mb-6">Mulai perjalanan belajarmu dengan pengalaman yang lebih modern dan menyenangkan.</p>
             <a href="{{ route('register') }}"
-               class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition">
+                class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition">
                 Daftar Sekarang Gratis
             </a>
         </div>
@@ -95,4 +97,5 @@
     </footer>
 
 </body>
+
 </html>
